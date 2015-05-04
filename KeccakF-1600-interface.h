@@ -1,46 +1,40 @@
 /*
-The Keccak sponge function, designed by Guido Bertoni, Joan Daemen,
-Michaël Peeters and Gilles Van Assche. For more information, feedback or
-questions, please refer to our website: http://keccak.noekeon.org/
+Implementation by the Keccak, Keyak and Ketje Teams, namely, Guido Bertoni,
+Joan Daemen, Michaël Peeters, Gilles Van Assche and Ronny Van Keer, hereby
+denoted as "the implementer".
 
-Implementation by the designers,
-hereby denoted as "the implementer".
+For more information, feedback or questions, please refer to our websites:
+http://keccak.noekeon.org/
+http://keyak.noekeon.org/
+http://ketje.noekeon.org/
 
 To the extent possible under law, the implementer has waived all copyright
 and related or neighboring rights to the source code in this file.
 http://creativecommons.org/publicdomain/zero/1.0/
 */
 
-#ifndef _KeccakPermutationInterface_h_
-#define _KeccakPermutationInterface_h_
+#ifndef _KeccakF1600Interface_h_
+#define _KeccakF1600Interface_h_
 
-#include "KeccakF-1600-int-set.h"
+#include <string.h>
 
-void KeccakInitialize( void );
-void KeccakInitializeState(unsigned char *state);
-void KeccakPermutation(unsigned char *state);
-#ifdef ProvideFast576
-void KeccakAbsorb576bits(unsigned char *state, const unsigned char *data);
-#endif
-#ifdef ProvideFast832
-void KeccakAbsorb832bits(unsigned char *state, const unsigned char *data);
-#endif
-#ifdef ProvideFast1024
-void KeccakAbsorb1024bits(unsigned char *state, const unsigned char *data);
-#endif
-#ifdef ProvideFast1088
-void KeccakAbsorb1088bits(unsigned char *state, const unsigned char *data);
-#endif
-#ifdef ProvideFast1152
-void KeccakAbsorb1152bits(unsigned char *state, const unsigned char *data);
-#endif
-#ifdef ProvideFast1344
-void KeccakAbsorb1344bits(unsigned char *state, const unsigned char *data);
-#endif
-void KeccakAbsorb(unsigned char *state, const unsigned char *data, unsigned int laneCount);
-#ifdef ProvideFast1024
-void KeccakExtract1024bits(const unsigned char *state, unsigned char *data);
-#endif
-void KeccakExtract(const unsigned char *state, unsigned char *data, unsigned int laneCount);
+#define KeccakF_width 1600
+#define KeccakF_laneInBytes 8
+#define KeccakF_stateSizeInBytes (KeccakF_width/8)
+#define KeccakF_1600
+
+void KeccakF1600_Initialize( void );
+void KeccakF1600_StateInitialize(void *state);
+void KeccakF1600_StateXORBytes(void *state, const unsigned char *data, unsigned int offset, unsigned int length);
+void KeccakF1600_StateOverwriteBytes(void *state, const unsigned char *data, unsigned int offset, unsigned int length);
+void KeccakF1600_StateOverwriteWithZeroes(void *state, unsigned int byteCount);
+void KeccakF1600_StateComplementBit(void *state, unsigned int position);
+void KeccakF1600_StatePermute(void *state);
+void KeccakF1600_StateExtractBytes(const void *state, unsigned char *data, unsigned int offset, unsigned int length);
+void KeccakF1600_StateExtractAndXORBytes(const void *state, unsigned char *data, unsigned int offset, unsigned int length);
+size_t KeccakF1600_FBWL_Absorb(void *state, unsigned int laneCount, const unsigned char *data, size_t dataByteLen, unsigned char trailingBits);
+size_t KeccakF1600_FBWL_Squeeze(void *state, unsigned int laneCount, unsigned char *data, size_t dataByteLen);
+size_t KeccakF1600_FBWL_Wrap(void *state, unsigned int laneCount, const unsigned char *dataIn, unsigned char *dataOut, size_t dataByteLen, unsigned char trailingBits);
+size_t KeccakF1600_FBWL_Unwrap(void *state, unsigned int laneCount, const unsigned char *dataIn, unsigned char *dataOut, size_t dataByteLen, unsigned char trailingBits);
 
 #endif

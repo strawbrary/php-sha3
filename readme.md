@@ -1,6 +1,8 @@
 PHP SHA-3 (Keccak) Extension
 ============================
-This is a PHP extension which is a wrapper for the official implementation of the Keccak hash function, as submitted to the NIST hash function contest and selected to become the official SHA-3 algorithm. SHA-3 is intended to replace older general use hash functions such as SHA-2 and MD5. The algorithm was designed by Guido Bertoni, Joan Daemen, Michaël Peeters and Gilles Van Assche.
+This PHP extension is a wrapper for the reference implementation of the SHA-3 (Keccak) hash function. SHA-3 is intended to replace older general use hash functions such as SHA-2 and MD5. The algorithm was designed by Guido Bertoni, Joan Daemen, Michaël Peeters and Gilles Van Assche.
+
+This extension currently uses the FIPS 202 draft standard. Note that as of May 2015, standardization is still ongoing and the final output values may be different from the current implementation.
 
 Installation
 ------------
@@ -15,7 +17,7 @@ Installation
 extension=sha3.so
 ```
 
-You may need to restart your httpd to load the extension
+You may need to restart your httpd/FPM to load the extension. You can verify it is loaded by looking for sha3 in your phpinfo.
 
 Usage
 ----
@@ -24,7 +26,7 @@ string sha3 ( string $str [, int $outputSize = 512, bool $rawOutput = false ] )
 ```
 
 * $str: The string to hash
-* $outputSize: The bit length of the output hash (accepted values: 224, 256, 384, 512)
+* $outputSize: The bit length of the output hash
 * $rawOutput: If set to true, then the hash is returned in raw binary format
 
 * Return value: A hex string containing the sha3 hash of the input string
@@ -35,16 +37,16 @@ Examples
 echo sha3('');
 ```
 
-0eab42de4c3ceb9235fc91acffe746b29c29a8c366b7c60e4e67c466f36a4304c00fa9caf9d87976ba469bcbe06713b435f091ef2769fb160cdab33d3670680e
+a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a615b2123af1f5f94c11e3e9402c3ac558f500199d95b6d3e301758586281dcd26
 
 ```php
 echo sha3('', 256);
 ```
 
-c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470
+a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a
 
 ```php
 echo sha3('foobar', 384);
 ```
 
-e8c02310ada7fbf1c550713cdaa0a3eaf02ee13990f73851e7e5a183f99df541d833424e702e4e22eb4306b7bcbeb965
+0fa8abfbdaf924ad307b74dd2ed183b9a4a398891a2f6bac8fd2db7041b77f068580f9c6c66f699b496c2da1cbcc7ed8
