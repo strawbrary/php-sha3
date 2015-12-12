@@ -77,14 +77,21 @@ PHP_FUNCTION(sha3)
     Keccak_HashFinal(&hashInstance, hashVal);
 
     if (rawOutput) {
+#if ZEND_MODULE_API_NO >= 20151012
+        RETVAL_STRINGL((char *)hashVal, hashByteLength);
+#else
         RETURN_STRINGL((char *)hashVal, hashByteLength, 1);
+#endif
     } else {
         char *hexDigest = safe_emalloc(hashByteLength, 2, 1);
 
         php_hash_bin2hex(hexDigest, hashVal, hashByteLength);
         hexDigest[2 * hashByteLength] = 0;
-
+#if ZEND_MODULE_API_NO >= 20151012
+        RETVAL_STRINGL(hexDigest, hashByteLength * 2);
+#else
         RETURN_STRINGL(hexDigest, hashByteLength * 2, 1);
+#endif
     }
 }
 /* https://github.com/strawbrary/php-sha3 */
