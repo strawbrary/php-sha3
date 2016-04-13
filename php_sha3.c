@@ -49,10 +49,16 @@ ZEND_GET_MODULE(sha3)
 
 PHP_FUNCTION(sha3)
 {
+#if ZEND_MODULE_API_NO >= 20151012
+    zend_long hashBitLength = 512;
+    zend_long hashByteLength;
+    size_t dataByteLength;
+#else
     long hashBitLength = 512;
-    int hashByteLength;
-    char *data;
+    long hashByteLength;
     int dataByteLength;
+#endif
+    char *data;
     zend_bool rawOutput = 0;
 
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|lb", &data, &dataByteLength, &hashBitLength, &rawOutput) == FAILURE) {
@@ -94,4 +100,3 @@ PHP_FUNCTION(sha3)
 #endif
     }
 }
-/* https://github.com/strawbrary/php-sha3 */
