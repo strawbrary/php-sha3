@@ -9,6 +9,7 @@ matrix:
   include:
     - os: osx
       language: generic
+      php: '7.1'
       before_install:
         - brew tap homebrew/php
         - brew update
