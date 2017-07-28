@@ -5,6 +5,14 @@ php:
   - '7.1'
 env:
   - NO_INTERACTION=1
+matrix:
+  include:
+    - os: osx
+      language: generic
+      before_install:
+        - brew tap homebrew/php
+        - brew update
+        - brew install php71
 before_script:
   - phpize
   - ./configure --enable-sha3
