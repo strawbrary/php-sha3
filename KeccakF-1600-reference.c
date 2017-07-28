@@ -139,7 +139,7 @@ void KeccakF1600OnWords(tKeccakLane *state);
 void KeccakF1600Round(tKeccakLane *state, unsigned int indexRound);
 void theta(tKeccakLane *A);
 void rho(tKeccakLane *A);
-void pi(tKeccakLane *A);
+void K_pi(tKeccakLane *A);
 void chi(tKeccakLane *A);
 void iota(tKeccakLane *A, unsigned int indexRound);
 
@@ -200,7 +200,7 @@ void KeccakF1600Round(tKeccakLane *state, unsigned int indexRound)
     rho(state);
     displayStateAsLanes(3, "After rho", state);
 
-    pi(state);
+    K_pi(state);
     displayStateAsLanes(3, "After pi", state);
 
     chi(state);
@@ -237,7 +237,7 @@ void rho(tKeccakLane *A)
         A[index(x, y)] = ROL64(A[index(x, y)], KeccakRhoOffsets[index(x, y)]);
 }
 
-void pi(tKeccakLane *A)
+void K_pi(tKeccakLane *A)
 {
     unsigned int x, y;
     tKeccakLane tempA[25];
